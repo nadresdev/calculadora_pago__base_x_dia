@@ -1,8 +1,8 @@
-import os
+import streamlit as st
 from typing import Dict, Any
 
 class Settings:
-    """Configuración de la aplicación con validación de variables de entorno"""
+    """Configuración centralizada de la aplicación"""
     
     # Google Sheets
     GOOGLE_SCOPES = [
@@ -18,7 +18,7 @@ class Settings:
     
     # App
     REGISTROS_POR_PAGINA: int = 10
-    APP_TITLE: str = "🕒 Sistema de Registro de Horarios"
+    APP_TITLE: str = "🕒 Registro de Horarios con Recargos"
     
     # Recargos predefinidos
     RECARGOS = [0, 5000, 10000, 15000, 20000, 25000, 30000, 35000, 40000]
@@ -27,7 +27,6 @@ class Settings:
     def google_credentials(self) -> Dict[str, str]:
         """Obtiene credenciales de Google Sheets desde secrets"""
         try:
-            import streamlit as st
             if "google_sheets" not in st.secrets:
                 raise ValueError("No se encontraron las credenciales en secrets.toml")
             
@@ -43,7 +42,8 @@ class Settings:
                 "token_uri": secrets["token_uri"],
                 "auth_provider_x509_cert_url": secrets["auth_provider_x509_cert_url"],
                 "client_x509_cert_url": secrets["client_x509_cert_url"],
-                "universe_domain": secrets.get("universe_domain", "googleapis.com")
+                "universe_domain": secrets.get("universe_domain", "googleapis.com"),
+                "spreadsheet_name": secrets["spreadsheet_name"]
             }
         except Exception as e:
             raise ValueError(f"Error cargando credenciales: {e}")

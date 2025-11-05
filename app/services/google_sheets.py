@@ -36,8 +36,7 @@ class GoogleSheetsService:
         """Lazy initialization de la hoja de cálculo"""
         if self._sheet is None:
             try:
-                spreadsheet_name = settings.google_credentials.get("spreadsheet_name") or \
-                                 st.secrets["google_sheets"]["spreadsheet_name"]
+                spreadsheet_name = settings.google_credentials["spreadsheet_name"]
                 self._sheet = self.client.open(spreadsheet_name).sheet1
                 self._ensure_headers()
                 logger.info("Hoja de cálculo inicializada correctamente")
@@ -50,7 +49,7 @@ class GoogleSheetsService:
         """Verifica y crea los encabezados si no existen"""
         headers = [
             "Fecha", "Hora Entrada", "Hora Salida", "Recargo",
-            "Horas Trabajadas", "Pago Base", "Pago con Recargo", "Timestamp"
+            "Horas Trabajadas", "Pago Base", "Pago con Recargo"
         ]
         
         try:
@@ -60,11 +59,9 @@ class GoogleSheetsService:
                 self.sheet.append_row(headers)
                 return True
             elif current_data[0] != headers:
-                # Preservar datos existentes al actualizar headers
-                if len(current_data) > 1:
-                    self.sheet.insert_row(headers, index=1)
-                else:
-                    self.sheet.update('A1', [headers])
+                if current_data:
+                    self.sheet.clear()
+                self.sheet.append_row(headers)
                 return True
             return False
             
@@ -82,8 +79,7 @@ class GoogleSheetsService:
                 record_data["recargo"],
                 record_data["horas_trabajadas"],
                 record_data["pago_base"],
-                record_data["pago_total"],
-                record_data.get("timestamp", "")  # Para tracking
+                record_data["pago_total"]
             ]
             
             self.sheet.append_row(record)

@@ -1,24 +1,23 @@
 registro_horarios/
 ├── app/
 │   ├── __init__.py
-│   ├── main.py              # Streamlit app principal
-│   ├── config/
+│   ├── main.py
+│   ├── components/
 │   │   ├── __init__.py
-│   │   └── settings.py      # Configuración y constantes
+│   │   ├── banner.py
+│   │   ├── forms.py
+│   │   └── dashboard.py
 │   ├── services/
 │   │   ├── __init__.py
-│   │   └── google_sheets.py # Lógica de Google Sheets
+│   │   └── google_sheets.py
 │   ├── utils/
 │   │   ├── __init__.py
-│   │   ├── validators.py    # Validaciones
-│   │   └── calculators.py   # Lógica de cálculos
-│   └── components/
+│   │   ├── calculators.py
+│   │   └── validators.py
+│   └── config/
 │       ├── __init__.py
-│       ├── forms.py         # Componentes de formulario
-│       └── dashboard.py     # Componentes de visualización
+│       └── settings.py
 ├── requirements.txt
-├── .env.example
-├── .gitignore
 └── README.md
 
 estructura del proyecto-

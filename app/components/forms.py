@@ -62,3 +62,32 @@ def render_schedule_form() -> Optional[Dict[str, Any]]:
         "hora_salida": hora_salida,
         "recargo": recargo
     }
+
+def render_results(calculation_data: Dict[str, Any]) -> None:
+    """Renderiza los resultados del cálculo"""
+    st.subheader("💰 Resumen de Pago")
+    
+    col1, col2, col3 = st.columns(3)
+    
+    with col1:
+        st.metric(
+            label="Horas Trabajadas",
+            value=calculation_data["horas_formateadas"],
+            help="Total de horas trabajadas en el turno"
+        )
+    
+    with col2:
+        st.metric(
+            label="Pago Base",
+            value=f"$ {calculation_data['pago_base']:,.0f}",
+            help="Pago calculado según horas trabajadas"
+        )
+    
+    with col3:
+        st.metric(
+            label="Pago Total",
+            value=f"$ {calculation_data['pago_total']:,.0f}",
+            delta=f"$ {calculation_data['recargo']:,.0f}" if calculation_data['recargo'] > 0 else None,
+            delta_color="off",
+            help="Pago base más recargos adicionales"
+        )
