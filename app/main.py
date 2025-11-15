@@ -20,7 +20,7 @@ try:
     from app.services.google_sheets import sheets_service
     from app.components.banner import banner_reglas
     from app.components.forms import render_schedule_form, render_results
-    from app.components.dashboard import render_historical_data, render_weekly_summary
+    from app.components.dashboard import render_historical_data, render_weekly_summary, render_weekly_statistics
     from app.utils.calculators import calculate_worked_hours, calculate_payment
 except ImportError as e:
     logger.error(f"Error en importaciones: {e}")
@@ -106,7 +106,11 @@ def main():
         st.header("📊 Historial de Registros")
         
         # Crear pestañas para diferentes vistas
-        tab1, tab2 = st.tabs(["📅 Registros por Semana", "📋 Todos los Registros"])
+        tab1, tab2, tab3 = st.tabs([
+            "📅 Registros por Semana", 
+            "📋 Todos los Registros",
+            "📊 Estadísticas Avanzadas"  # ← NUEVA PESTAÑA
+        ])
         
         with tab1:
             # Vista de registros por semana con filtros
@@ -177,6 +181,9 @@ def main():
                         )
             else:
                 st.info("No hay registros disponibles")
+        
+        with tab3:  # ← NUEVA PESTAÑA DE ESTADÍSTICAS AVANZADAS
+            render_weekly_statistics(records)
             
     except Exception as e:
         logger.error(f"Error en la aplicación: {e}")
